@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href={% url 'index' %}>Home</a></li>
+	  <li><a href={% url 'categories' %}>Categories</a></li>
+          <li><a href={% url 'category' object.category.slug %}>{{ object.category.name }}</a></li>
+	  <li>{{ object.title }}</li>
+        </ol>
+        <h2>{{ object.title }}</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+    <!-- ======= Services Section ======= -->
+    <section id="team" class="team">
+      <div class="container">
+
+	  {% for item in object.notes.all %}
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="member">
+              <h4>{{ item.title }}</h4>
+              <span>{{ item.created }}</span>
+              <p>
+               {{ item.text }} 
+              </p>
+            </div>
+          </div>
+	  {% endfor %}
+
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+  </main><!-- End #main -->
+{% endblock %}

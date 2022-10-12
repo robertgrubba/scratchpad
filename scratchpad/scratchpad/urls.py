@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from . import views
 
 urlpatterns = [
@@ -26,12 +26,13 @@ urlpatterns = [
 urlpatterns += [
     path('',views.index,name='index'),
     path('about',views.about,name='about'),
-    path('services',views.services,name='services'),
     path('portfolio',views.portfolio,name='portfolio'),
     path('team',views.team,name='team'),
     path('blog',views.blog,name='blog'),
     path('pricing',views.pricing,name='pricing'),
     path('contact',views.contact,name='contact'),
+    path('notes', include('notes.urls')),
+
 ]
 
 urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
