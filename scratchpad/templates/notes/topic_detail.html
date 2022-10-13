@@ -22,9 +22,9 @@
       <div class="container">
 
 	  {% for item in object.notes.all %}
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="d-flex align-items-stretch">
             <div class="member">
-              <h4>{{ item.title }}</h4>
+              <h4>#{{forloop.counter}} {{ item.title }}</h4>
               <span>{{ item.created }}</span>
               <p>
                {{ item.text }} 
