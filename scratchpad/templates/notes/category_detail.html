@@ -8,7 +8,7 @@
 
         <ol>
           <li><a href={% url 'index' %}>Home</a></li>
-	  <li><a href={% url 'categories' %}>Categories</a></li>
+	  <li><a href={% url 'notes:categories' %}>Categories</a></li>
           <li>{{ object.name }}</li>
         </ol>
         <h2>{{ object.name }}</h2>
@@ -25,7 +25,7 @@
 		  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
 		    <div class="icon-box">
 		      <div class="icon"><i class="bx bxl-file"></i></div>
-		      <h4><a href={% url 'topic' item.slug %}>{{ item.title }}</a></h4>
+		      <h4><a href={% url 'notes:topic' item.slug %}>{{ item.title }}</a></h4>
 		      <p>NOTENOTENOTE</p>
 		    </div>
 		  </div>

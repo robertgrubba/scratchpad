@@ -24,11 +24,18 @@
 		  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
 		    <div class="icon-box">
 		      <div class="icon"><i class="bx bxl-file"></i></div>
-		      <h4><a href={% url 'category' item.slug %}>{{ item.name }}</a></h4>
+		      <h4><a href={% url 'notes:category' item.slug %}>{{ item.name }}</a></h4>
 		      <p>Blablabla</p>
 		    </div>
 		  </div>
 	  {% endfor %}
+		  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+		    <div class="icon-box">
+		      <div class="icon"><i class="bx bxl-file"></i></div>
+		      <h4><a href={% url 'notes:category_create' %}>Add new category</a></h4>
+		      <p>You can add a new category to efficiently manage topics of your notes</p>
+		    </div>
+		  </div>
         </div>
 
       </div>

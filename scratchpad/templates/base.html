@@ -68,8 +68,12 @@
         <ul>
           <li><a href={% url 'index' %}>Home</a></li>
           <li><a href={% url 'about' %}>About</a></li>
-          <li><a href={% url 'categories' %}>Notes</a></li>
+          <li><a href={% url 'notes:categories' %}>Notes</a></li>
+	{% if user.is_authenticated %}
+          <li><a href={% url 'logout' %}>Logout</a></li>
+	{% else %}
           <li><a href={% url 'login' %}>Login</a></li>
+	{% endif %}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->

@@ -8,8 +8,8 @@
 
         <ol>
           <li><a href={% url 'index' %}>Home</a></li>
-	  <li><a href={% url 'categories' %}>Categories</a></li>
-          <li><a href={% url 'category' object.category.slug %}>{{ object.category.name }}</a></li>
+	  <li><a href={% url 'notes:categories' %}>Categories</a></li>
+          <li><a href={% url 'notes:category' object.category.slug %}>{{ object.category.name }}</a></li>
 	  <li>{{ object.title }}</li>
         </ol>
         <h2>{{ object.title }}</h2>

@@ -4,8 +4,11 @@ from django.conf import settings
 from notes import views
 #from ingredient.views import IngredientListView
 
+app_name='notes'
+
 urlpatterns = [
         path('', views.CategoryListView.as_view(), name='categories'),
+        path('/category/create', views.CategoryCreateView.as_view(), name='category_create'),
         path('/category/<slug:slug>', views.CategoryDetailView.as_view(), name='category'),
         path('/topic/<slug:slug>', views.TopicDetailView.as_view(), name='topic'),
         ]
