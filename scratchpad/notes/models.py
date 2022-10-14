@@ -1,13 +1,14 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 # Create your models here.
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(default='a')
+    slug = models.SlugField()
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     
     def save(self, *args, **kwargs):
@@ -16,6 +17,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.owner.username +": "+self.name
+
+    def get_absolute_url(self):
+        return reverse('notes:categories')
 
 class Topic(models.Model):
     title = models.CharField(max_length=100)
@@ -30,6 +34,9 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.owner.username +": "+self.title
+
+    def get_absolute_url(self):
+        return reverse('notes:topic', args=[str(self.slug)])
 
     class Meta:
         ordering = ['title']

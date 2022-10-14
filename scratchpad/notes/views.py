@@ -35,10 +35,29 @@ class CategoryCreateView(LoginRequiredMixin,CreateView):
 
 class CategoryDetailView(LoginRequiredMixin,DetailView):
     model = Category
-
+    
     def get_queryset(self):
+        self.request.session['lastcat']=self.kwargs
         return Category.objects.filter(owner=self.request.user)
 
 class TopicDetailView(LoginRequiredMixin,DetailView):
     model = Topic
+    
+class TopicCreateView(LoginRequiredMixin,CreateView):
+    model = Topic
+    
+    fields = ['title','url']
+#    def get_initial(self):
+#        initial = super(TopicCreateView, self).get_initial()
+#        initial = initial.copy()
+#        last_cat_slug=self.request.session['lastcat']['slug']
+#        return initial
 
+ 
+    def form_valid(self,form):
+        if Topic.objects.filter(owner=self.request.user, title=form.instance.title).exists():
+            raise forms.ValidationError("You are not allowed to duplicate categories")
+        else:
+            form.instance.owner = self.request.user
+            form.instance.category = Category.objects.filter(slug=self.request.session['lastcat']['slug']).first()
+            return super().form_valid(form)
