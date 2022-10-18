@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django import forms
 from django.views.generic import TemplateView,ListView,DetailView
 from django.views.generic.edit import CreateView
-from .models import Topic,Category,Note
+from .models import Topic,Category,Note,Attachement
 from notes import views
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -22,7 +22,7 @@ class CategoryCreateView(LoginRequiredMixin,CreateView):
     fields = ['name']
 
     def form_valid(self, form):
-        if Category.objects.filter(owner=self.request.user,name=form.instance.name).exists():
+        if Category.objects.filter(owner=self.request.user,name__iexact=form.instance.name).exists():
             raise forms.ValidationError('You are not allowed to duplicate categories')
         else:
             form.instance.owner = self.request.user
@@ -42,6 +42,10 @@ class CategoryDetailView(LoginRequiredMixin,DetailView):
 
 class TopicDetailView(LoginRequiredMixin,DetailView):
     model = Topic
+
+    def get_queryset(self):
+        self.request.session['lasttop']=self.kwargs
+        return Topic.objects.filter(owner=self.request.user)
     
 class TopicCreateView(LoginRequiredMixin,CreateView):
     model = Topic
@@ -59,5 +63,33 @@ class TopicCreateView(LoginRequiredMixin,CreateView):
             raise forms.ValidationError("You are not allowed to duplicate categories")
         else:
             form.instance.owner = self.request.user
-            form.instance.category = Category.objects.filter(slug=self.request.session['lastcat']['slug']).first()
+            form.instance.category = Category.objects.filter(slug=self.request.session['lastcat']['slug'],owner=self.request.user).first()
             return super().form_valid(form)
+
+
+class NoteCreateView(LoginRequiredMixin,CreateView):
+    model = Note
+    
+    fields = ['title','text']
+
+    def form_valid(self,form):
+        if Note.objects.filter(title=form.instance.title).exists():
+            raise forms.ValidationError("Try not to duplicate notes titles")
+        else:
+            form.instance.topic = Topic.objects.filter(slug=self.request.session['lasttop']['slug'],owner=self.request.user).first()
+            return super().form_valid(form)
+
+class AttachementCreateView(LoginRequiredMixin,CreateView):
+    model = Attachement
+
+    fields = ['file']
+
+    def form_valid(self,form):
+        if Attachement.objects.filter(file=form.instance.file).exists():
+            raise forms.ValidationError("Try not to duplicate attachements")
+        else:
+            form.instance.note = self.request.id
+            return super().form_valid(form)
+
+
+ 

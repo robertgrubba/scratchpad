@@ -26,7 +26,7 @@ class Topic(models.Model):
     url = models.URLField(max_length=300, null=True, blank=True) 
     category = models.ForeignKey(Category, on_delete=models.CASCADE,related_name='topics')
     slug = models.SlugField(default='a')
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,related_name='topic')
 
     def save(self, *args, **kwargs):
         self.slug=slugify(self.title)
@@ -50,7 +50,17 @@ class Note(models.Model):
     def __str__(self):
         return self.topic.title + ": " +self.title
 
+    def get_absolute_url(self):
+        return reverse('notes:topic', args=[str(self.topic.slug)])
+
     class Meta:
         ordering = ['created']
 
+
+class Attachement(models.Model):
+    file = models.FileField(upload_to='uploads/%Y/%m/%d/',null=True,blank=True,default=None)
+    note = models.ForeignKey(Note, on_delete=models.SET_NULL, null=True, blank=True, related_name='attachements')
+
+    def __str__(self):
+        return self.file
 
