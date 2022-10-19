@@ -85,11 +85,8 @@ class AttachementCreateView(LoginRequiredMixin,CreateView):
     fields = ['file']
 
     def form_valid(self,form):
-        if Attachement.objects.filter(file=form.instance.file).exists():
-            raise forms.ValidationError("Try not to duplicate attachements")
-        else:
-            form.instance.note = self.request.id
-            return super().form_valid(form)
+        form.instance.note = Note.objects.filter(id=self.kwargs['id']).first()
+        return super().form_valid(form)
 
 
  

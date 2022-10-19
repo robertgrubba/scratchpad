@@ -2,6 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.urls import reverse
+from tinymce.models import HTMLField
 
 
 # Create your models here.
@@ -43,7 +44,7 @@ class Topic(models.Model):
 
 class Note(models.Model):
     title = models.CharField(max_length=100)
-    text = models.TextField()
+    text = HTMLField()
     created = models.DateTimeField(auto_now_add=True)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE,related_name='notes')
 
@@ -62,5 +63,7 @@ class Attachement(models.Model):
     note = models.ForeignKey(Note, on_delete=models.SET_NULL, null=True, blank=True, related_name='attachements')
 
     def __str__(self):
-        return self.file
+        return str(self.file.name)
 
+    def get_absolute_url(self):
+        return reverse('notes:topic', args=[str(self.note.topic.slug)])

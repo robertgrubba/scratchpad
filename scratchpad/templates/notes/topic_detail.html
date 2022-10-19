@@ -25,8 +25,13 @@
           <div class="d-flex align-items-stretch">
             <div class="member">
               <h4>#{{forloop.counter}} {{ item.title }}</h4>
-		<h5> <a href={% url 'notes:attachement_create' id=item.id %}>Add attachement </a></h5>
-		<h5>ATTACHEMENT <a href="{{ item.attachement.url }}">{{ item.attachement }}</a></h5>
+		{% if item.attachements.count > 0 %}
+			{% for attachement in item.attachements.all %}
+				<h5><a href="{{ attachement.file.url }}">{{ attachement }}</a></h5>
+			{% endfor %}
+		{% else %}
+			<h5><a href={% url 'notes:attachement_create' id=item.id %}>add attachement</a></h5>
+		{% endif %}
               <span>{{ item.created }}</span>
               <p>
                {{ item.text }} 

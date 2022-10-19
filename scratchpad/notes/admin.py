@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Category,Topic,Note
+from .models import Category,Topic,Note,Attachement
 
 
 class NoteInline(admin.StackedInline):
@@ -20,5 +20,6 @@ class TopicAdmin(admin.ModelAdmin):
 
 admin.site.register(Category)
 admin.site.register(Note)
+admin.site.register(Attachement)
 admin.site.register(Topic,TopicAdmin)
 #admin.site.register(Topic)
