@@ -13,6 +13,7 @@
 	  <li>{{ object.title }}</li>
         </ol>
         <h2>{{ object.title }}</h2>
+	<h4><a href="{{object.url}}">{{ object.url }}</a></h4>
 
       </div>
     </section><!-- End Breadcrumbs -->
@@ -25,15 +26,24 @@
           <div class="d-flex align-items-stretch">
             <div class="member">
               <h4>#{{forloop.counter}} {{ item.title }}</h4>
+              <span>{{ item.created }}</span>
+		<p>
 		{% if item.attachements.count > 0 %}
 			{% for attachement in item.attachements.all %}
-				<h5><a href="{{ attachement.file.url }}">{{ attachement }}</a></h5>
+				<h5><a href="{{ attachement.file.url }}">{{ attachement }}</a> ({{ attachement.file.size | filesizeformat }}) {{ attachment.get_extension }}</h5>
+				{% if attachement.get_extension == "mp4" %}
+
+					<video width="320" height="240" controls>
+ 						 <source src="{{ attachment.file.url }}" type="video/mp4">
+						Your browser does not support the video tag.
+					</video	>
+				{% endif %}
 			{% endfor %}
 		{% else %}
 			<h5><a href={% url 'notes:attachement_create' id=item.id %}>add attachement</a></h5>
 		{% endif %}
-              <span>{{ item.created }}</span>
-              <p>
+		</p>
+		<p>
                {{ item.text }} 
               </p>
             </div>

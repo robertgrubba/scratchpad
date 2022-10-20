@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 <main id="main">
 <div class="container">
@@ -8,9 +10,8 @@
     {% csrf_token %}
 
   <div class="form-group row">
-    <label for="input" class="col-sm-2 col-form-label">{{ form.file.label_tag }}</label>
     <div class="col-sm-10">
-      {{ form.file }}
+      {{ form.file |as_crispy_field }}
     </div>
   </div>
   <div class="form-group row">

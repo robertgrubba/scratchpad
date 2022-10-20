@@ -60,7 +60,11 @@ class Note(models.Model):
 
 class Attachement(models.Model):
     file = models.FileField(upload_to='uploads/%Y/%m/%d/',null=True,blank=True,default=None)
-    note = models.ForeignKey(Note, on_delete=models.SET_NULL, null=True, blank=True, related_name='attachements')
+    note = models.ForeignKey(Note, on_delete=models.CASCADE, null=True, blank=True, related_name='attachements')
+
+    def get_extension(self):
+        filename = self.file.name
+        return str(filename.split('.')[-1])
 
     def __str__(self):
         return str(self.file.name)
