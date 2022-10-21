@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django import forms
-from django.views.generic import TemplateView,ListView,DetailView
+from django.views.generic import TemplateView,ListView,DetailView,UpdateView,DeleteView
 from django.views.generic.edit import CreateView
 from .models import Topic,Category,Note,Attachement
 from notes import views
@@ -78,6 +79,23 @@ class NoteCreateView(LoginRequiredMixin,CreateView):
         else:
             form.instance.topic = Topic.objects.filter(slug=self.request.session['lasttop']['slug'],owner=self.request.user).first()
             return super().form_valid(form)
+
+class NoteUpdateView(LoginRequiredMixin,UpdateView):
+    model = Note
+    fields = ['title','text']
+    template_name_suffix = '_update_form'
+
+class NoteDeleteView(LoginRequiredMixin,DeleteView):
+    model = Note
+    success_url = reverse_lazy('notes:topics')
+
+    def delete(self, *args, **kwargs):
+        self.object = self.get_object()
+        super().delete(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('notes:topic', kwargs={'slug': self.object.topic.slug})
+
 
 class AttachementCreateView(LoginRequiredMixin,CreateView):
     model = Attachement

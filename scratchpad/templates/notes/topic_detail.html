@@ -26,7 +26,8 @@
           <div class="d-flex align-items-stretch">
             <div class="member">
               <h4>#{{forloop.counter}} {{ item.title }}</h4>
-              <span>{{ item.created }}</span>
+              <span><a href={% url 'notes:note_update' pk=item.id %}>&#xF4CA;</a> <a href={% url 'notes:note_delete' pk=item.id %}?next={{ request.path|urlencode }}>[x]</a> {{ item.created }}</span>
+		
 		<p>
 		{% if item.attachements.count > 0 %}
 			{% for attachement in item.attachements.all %}

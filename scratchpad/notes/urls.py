@@ -13,6 +13,8 @@ urlpatterns = [
         path('/topic/new', views.TopicCreateView.as_view(), name='topic_create'),
         path('/topic/<slug:slug>', views.TopicDetailView.as_view(), name='topic'),
         path('/note/new', views.NoteCreateView.as_view(), name='note_create'),
+        path('/note/update/<int:pk>', views.NoteUpdateView.as_view(), name='note_update'),
+        path('/note/delete/<int:pk>', views.NoteDeleteView.as_view(), name='note_delete'),
         path('/attachement/add/<int:id>', views.AttachementCreateView.as_view(), name='attachement_create'),
         ]
 
