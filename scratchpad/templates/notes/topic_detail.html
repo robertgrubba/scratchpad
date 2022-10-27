@@ -13,7 +13,12 @@
 	  <li>{{ object.title }}</li>
         </ol>
         <h2>{{ object.title }}</h2>
-	<h4><a href="{{object.url}}">{{ object.url }}</a></h4>
+	{% if 'youtube.com' in object.url %}
+		<center><iframe width="560" height="315" src="{{ object.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+		<h4><a href="{{object.url}}">{{ object.url }}</a></h4>
+	{% else %}
+		<h4><a href="{{object.url}}">{{ object.url }}</a></h4>
+	{% endif %}
 
       </div>
     </section><!-- End Breadcrumbs -->
@@ -25,8 +30,10 @@
 	  {% for item in object.notes.all %}
           <div class="d-flex align-items-stretch">
             <div class="member">
+              <span style="text-align:right"><a href={% url 'notes:note_update' pk=item.id %}>[e]</a> <a href={% url 'notes:note_delete' pk=item.id %}>[x]</a></span>
+	      <span style="text-align:right"><a href={% url 'notes:attachement_create' id=item.id %}>[add attachement]</a></span>
               <h4>#{{forloop.counter}} {{ item.title }}</h4>
-              <span><a href={% url 'notes:note_update' pk=item.id %}>&#xF4CA;</a> <a href={% url 'notes:note_delete' pk=item.id %}?next={{ request.path|urlencode }}>[x]</a> {{ item.created }}</span>
+              <span>{{ item.created }}</span>
 		
 		<p>
 		{% if item.attachements.count > 0 %}
@@ -40,12 +47,10 @@
 					</video	>
 				{% endif %}
 			{% endfor %}
-		{% else %}
-			<h5><a href={% url 'notes:attachement_create' id=item.id %}>add attachement</a></h5>
 		{% endif %}
 		</p>
 		<p>
-               {{ item.text }} 
+               {{ item.text |safe }} 
               </p>
             </div>
           </div>

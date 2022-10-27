@@ -41,6 +41,17 @@ class CategoryDetailView(LoginRequiredMixin,DetailView):
         self.request.session['lastcat']=self.kwargs
         return Category.objects.filter(owner=self.request.user)
 
+class CategoryDeleteView(LoginRequiredMixin,DeleteView):
+    model = Category
+    success_url = reverse_lazy('notes:categories')
+
+    def delete(self, *args, **kwargs):
+        self.object = self.get_object()
+        super().delete(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('notes:categories')
+
 class TopicDetailView(LoginRequiredMixin,DetailView):
     model = Topic
 
@@ -66,6 +77,17 @@ class TopicCreateView(LoginRequiredMixin,CreateView):
             form.instance.owner = self.request.user
             form.instance.category = Category.objects.filter(slug=self.request.session['lastcat']['slug'],owner=self.request.user).first()
             return super().form_valid(form)
+
+class TopicDeleteView(LoginRequiredMixin,DeleteView):
+    model = Topic
+    success_url = reverse_lazy('notes:category')
+
+    def delete(self, *args, **kwargs):
+        self.object = self.get_object()
+        super().delete(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('notes:category', kwargs={'slug': self.object.category.slug})
 
 
 class NoteCreateView(LoginRequiredMixin,CreateView):
