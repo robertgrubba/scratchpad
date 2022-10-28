@@ -26,7 +26,7 @@
 		    <div class="icon-box">
 		      <div class="icon"><i class="bx bxl-file"></i></div>
 		      <h4><a href={% url 'notes:topic' item.slug %}>{{ item.title }}</a></h4>
-		      <p><span style="text-align:right"><a href={% url 'notes:topic_delete' pk=item.id %}>[x]</a></span></p>
+		      <p><span style="text-align:right"><a href={% url 'notes:topic_delete' pk=item.id %}>[delete topic]</a></span></p>
 		    </div>
 		  </div>
 	  {% endfor %}
