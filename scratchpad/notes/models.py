@@ -2,7 +2,6 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.urls import reverse
-from tinymce.models import HTMLField
 
 
 # Create your models here.
@@ -44,7 +43,7 @@ class Topic(models.Model):
 
 class Note(models.Model):
     title = models.CharField(max_length=100)
-    text = HTMLField()
+    text = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE,related_name='notes')
 
